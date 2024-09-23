@@ -1,17 +1,22 @@
 import time
-print('Привет! Это тренажёр твоего мозга. Прокачайся в устном счёте и не только...')
+from model import db_func as db
+
+db.make_db()
+
+print(
+    'Hello! This is a program to train your brain. Improve your mental arithmetic, logic, memory and speed of thought')
 time.sleep(2)
-print('Выберите направление тренировки: ')
+print('Select training direction: ')
 time.sleep(2)
-print('Введите 1 - для тренировки устного счёта')
+print('Enter 1 - to practice mental counting')
 time.sleep(1)
-print('Введите 2 - для тренировки скорости мысли')
+print('Enter 2 - to train the speed of thought')
 time.sleep(1)
-training_direction = input('Введите цифру 1 или 2 : ')
+training_direction = input('Enter the number 1 or 2: ')
 
 if training_direction == '1':
-    print('Запуск математического модуля')
+    print('Running the math module')
 elif training_direction == '2':
-    print('Запуск модуля "скорости мысли" ')
+    print('Launch of the "speed of thought" module ')
 else:
     print('Введите 1 или 2')
