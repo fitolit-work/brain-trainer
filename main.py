@@ -14,11 +14,14 @@ window['cursor'] = 'target'
 
 create_player_frame = CreatePlayerFrame(window, 'black')
 load_player_frame = LoadPlayerFrame(window, 'black')
-players_frame = PlayersFrame(window, 'black', create_player_frame.create_player_frame,
-                             load_player_frame.load_player_frame)
-start_frame = StartFrame(window, 'black', players_frame.players_frame)
+players_frame = PlayersFrame(window, 'black')
+start_frame = StartFrame(window, 'black')
 
-# зарядил кнопки на возврат к обратной странице
+start_frame.next_frame = players_frame.players_frame
+
+players_frame.load_player_frame = load_player_frame.load_player_frame
+players_frame.create_player_frame = create_player_frame.create_player_frame
+
 load_player_frame.back_page_for_button_back = players_frame.players_frame
 create_player_frame.back_page_for_button_back = players_frame.players_frame
 
