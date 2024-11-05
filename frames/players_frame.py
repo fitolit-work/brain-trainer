@@ -2,6 +2,8 @@ import tkinter as tk
 import tkinter.ttk as ttk
 from tkinter.constants import CENTER
 
+from utils.play_sound import play_audio_thread
+
 
 class PlayersFrame:
     def __init__(self, parent, bg, create_frame, load_frame):
@@ -24,8 +26,10 @@ class PlayersFrame:
 
     @staticmethod
     def _create_player_frame(create_frame):
+        play_audio_thread('sounds/button_click.wav')
         create_frame.tkraise()
 
     @staticmethod
     def _load_player_frame(load_frame):
+        play_audio_thread('sounds/button_click.wav')
         load_frame.tkraise()

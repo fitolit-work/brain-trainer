@@ -4,6 +4,7 @@ from tkinter.constants import CENTER
 
 from model.db_func import add_user
 from utils import checks
+from utils.play_sound import play_audio_thread
 
 
 class CreatePlayerFrame:
@@ -39,6 +40,7 @@ class CreatePlayerFrame:
         self.load_player_button_back.place(anchor=CENTER, relx=0.5, rely=0.8)
 
     def _create_player(self):
+        play_audio_thread('sounds/button_click.wav')
         name, succes = checks.spaces_in_word(self.create_player_entry.get())
         if succes:
             add_user(name.lower())
@@ -47,5 +49,6 @@ class CreatePlayerFrame:
             self.create_player_entry.delete(0, 'end')
 
     def _load_back_frame(self):
+        play_audio_thread('sounds/button_click.wav')
         if self.back_page_for_button_back:
             self.back_page_for_button_back.tkraise()
