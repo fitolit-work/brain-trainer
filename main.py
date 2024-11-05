@@ -18,6 +18,10 @@ players_frame = PlayersFrame(window, 'black', create_player_frame.create_player_
                              load_player_frame.load_player_frame)
 start_frame = StartFrame(window, 'black', players_frame.players_frame)
 
+# зарядил кнопки на возврат к обратной странице
+load_player_frame.back_page_for_button_back = players_frame.players_frame
+create_player_frame.back_page_for_button_back = players_frame.players_frame
+
 db.make_db()
 
 window.mainloop()
