@@ -41,11 +41,12 @@ class CreatePlayerFrame:
 
     def _create_player(self):
         play_audio_thread('sounds/button_click.wav')
-        name, succes = checks.spaces_in_word(self.create_player_entry.get())
-        if succes:
-            add_user(name.lower())
+        result, success = checks.spaces_in_word(self.create_player_entry.get())
+        self.create_player_entry.delete(0, 'end')
+        if success:
+            add_user(result.lower())
         else:
-            self.create_player_help_label['text'] = name
+            self.create_player_help_label['text'] = result
             self.create_player_entry.delete(0, 'end')
 
     def _load_back_frame(self):

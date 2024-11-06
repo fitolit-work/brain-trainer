@@ -41,11 +41,12 @@ class LoadPlayerFrame:
 
     def _load_player(self):
         play_audio_thread('sounds/button_click.wav')
-        name, succes = checks.spaces_in_word(self.load_player_entry.get())
-        if succes:
-            load_user(name.lower())
+        result, success = checks.spaces_in_word(self.load_player_entry.get())
+        self.load_player_entry.delete(0, 'end')
+        if success:
+            load_user(result.lower())
         else:
-            self.load_player_help_label['text'] = name
+            self.load_player_help_label['text'] = result
             self.load_player_entry.delete(0, 'end')
 
     def _load_back_frame(self):
