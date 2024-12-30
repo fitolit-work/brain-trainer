@@ -24,7 +24,7 @@ class CreatePlayerFrame:
 
         self.create_player_button = tk.Button(self.create_player_frame, text='Create', font=('Lucida Console', 14),
                                               command=self._create_player)
-        self.back_page_for_button_back = ''
+        self.back_frame_for_button_back = ''
         self.load_player_button_back = tk.Button(self.create_player_frame, text='Back', font=('Lucida Console', 14),
                                                  command=self._load_back_frame)
 
@@ -51,5 +51,5 @@ class CreatePlayerFrame:
 
     def _load_back_frame(self):
         play_audio_thread('sounds/button_click.wav')
-        if self.back_page_for_button_back:
-            self.back_page_for_button_back.tkraise()
+        if self.back_frame_for_button_back:
+            self.back_frame_for_button_back.tkraise()

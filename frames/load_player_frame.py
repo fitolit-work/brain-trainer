@@ -8,6 +8,8 @@ from utils.play_sound import play_audio_thread
 
 
 class LoadPlayerFrame:
+    game_mode_frame: tk.Frame
+
     def __init__(self, parent, bg):
         self.load_player_frame = tk.Frame(parent, bg=bg)
         self.load_player_title_label = ttk.Label(self.load_player_frame, text='Upload your player', background='black',
@@ -21,10 +23,11 @@ class LoadPlayerFrame:
                                           foreground='#4eff00', bd=5, insertbackground='#4eff00',
                                           font=('Lucida Console', 14))
 
+        self.game_mode_frame = ''
         self.load_player_button = tk.Button(self.load_player_frame, text='Load', font=('Lucida Console', 14),
                                             command=self._load_player)
 
-        self.back_page_for_button_back = ''
+        self.back_frame_for_button_back = ''
         self.load_player_button_back = tk.Button(self.load_player_frame, text='Back', font=('Lucida Console', 14),
                                                  command=self._load_back_frame)
 
@@ -44,12 +47,22 @@ class LoadPlayerFrame:
         result, success = checks.spaces_in_word(self.load_player_entry.get())
         self.load_player_entry.delete(0, 'end')
         if success:
-            load_user(result.lower())
+            rows = load_user(result.lower())
+            if rows:
+                if self.game_mode_frame:
+                    self.game_mode_frame.tkraise()
+
+                    # изменение имени игрока
+                    for widget in self.game_mode_frame.winfo_children():
+                        if hasattr(widget, "player_name"):
+                            widget['text'] = f'Your Player: {result}'
+            else:
+                self.load_player_help_label['text'] = "Player is not define! Try again..."
         else:
             self.load_player_help_label['text'] = result
             self.load_player_entry.delete(0, 'end')
 
     def _load_back_frame(self):
         play_audio_thread('sounds/button_click.wav')
-        if self.back_page_for_button_back:
-            self.back_page_for_button_back.tkraise()
+        if self.back_frame_for_button_back:
+            self.back_frame_for_button_back.tkraise()
