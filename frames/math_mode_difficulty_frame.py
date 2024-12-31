@@ -58,16 +58,16 @@ class MathModeDifficultyFrame:
         play_audio_thread('sounds/button_click.wav')
         if difficulty == 'easy':
             print('easy')
-            self.update_difficulty([1, 10])
+            self.update_difficulty({'min_number':1, 'max_number':10, 'point':1})
         if difficulty == 'medium':
             print('medium')
-            self.update_difficulty([5, 30])
+            self.update_difficulty({'min_number':5, 'max_number':30, 'point':3})
         if difficulty == 'hard':
             print('hard')
-            self.update_difficulty([10, 70])
+            self.update_difficulty({'min_number':10, 'max_number':70, 'point':6})
         if difficulty == 'super hard':
             print('super hard')
-            self.update_difficulty([10, 199])
+            self.update_difficulty({'min_number':21, 'max_number':199, 'point':10})
 
         if self.math_game_frame_for_buttons:
             self.math_game_frame_for_buttons.tkraise()

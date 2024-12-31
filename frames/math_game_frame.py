@@ -1,24 +1,35 @@
-import threading
-import time
+from random import randint as ri
+from random import choice as rc
+
 import tkinter as tk
 import tkinter.ttk as ttk
 from tkinter.constants import CENTER
 
+from model.db_func import update_user
 from utils.play_sound import play_audio_thread
 
 
 class MathGameFrame:
     back_frame_for_button_back: tk.Frame
 
-    def __init__(self, parent, bg):
+    def __init__(self, parent, bg, get_data):
+        self.player = ''
+
         self.timer = 60
         self.game = False
+        self.symbols = ['+', '-', '*', '/']
+
+        self.min_number, self.max_number, self.points = 0, 0, 0
+        self.example_result = 0
+        self.example_text = ''
+
+        self.get_data = get_data
 
         self.math_game_frame = tk.Frame(parent, bg=bg)
         self.math_game_frame_title = ttk.Label(self.math_game_frame, text='Solve the example:', background='black',
                                                foreground='#4eff00', font=('Lucida Console', 20))
 
-        self.example_label = ttk.Label(self.math_game_frame, text='67 + 198 = ?', background='black',
+        self.example_label = ttk.Label(self.math_game_frame, text='000', background='black',
                                        foreground='#4eff00', font=('Lucida Console', 20))
         self.example_label.example_text = ''  # создание своего атрибута в виджете для хранения имени видджета
 
@@ -47,6 +58,8 @@ class MathGameFrame:
                                      command=self._load_back_frame)
 
         self._render_frame()
+
+        parent.bind("<Return>", self._get_answer)
 
     def _render_frame(self):
         self.math_game_frame.place(anchor='center', relx=0.5, rely=0.5, relwidth=1, relheight=1)
@@ -90,12 +103,38 @@ class MathGameFrame:
             self.answer_button['state'] = 'normal'
             self.play_again_or_start_button['state'] = 'disabled'
             self.timer_label['text'] = f'Timer: {self.timer} seconds left'
-            self.set_new_example()
+
+            self.example_text, self.example_result =  self._set_new_example()
+            self.example_label['text'] = self.example_text
+
             self.answer_entry_label.after(1000, self._timer_handler)
 
-    def _get_answer(self):
+    def _get_answer(self, event=0):
         play_audio_thread('sounds/button_click.wav')
-        print('взять ответ и сравнить с правильным + начислить очки и записатьих в БД')
+        try:
+            user_answer = float(self.answer_entry.get())
+            self.answer_entry_help['text'] = ''
+            if user_answer == self.example_result:
+                print('верно')
+                self.player['score'] = update_user(self.player['name'], self.player['score'], self.points)
+                self.points_label['text'] = f'Score: {self.player['score']}'
+            else:
+                print("не верно")
+            self.answer_entry.delete(0, 'end')
+            self.example_text, self.example_result = self._set_new_example()
+            self.example_label['text'] = self.example_text
+        except ValueError:
+            self.answer_entry_help['text'] = 'Input error! Enter numbers!'
+        finally:
+            self.answer_entry.delete(0, 'end')
 
-    def set_new_example(self):
-        print('собрать и показать новый пример + вернуть правильный ответ')
+    def _set_new_example(self):
+        self.min_number, self.max_number, self.points = self.get_data()[0].values()
+        self.player = self.get_data()[1]
+        self.points_label['text'] = f'Score: {self.player['score']}'
+
+        symbol = '+'
+        if symbol == '+':
+            num1  = ri(self.min_number, self.max_number)
+            num2  = ri(self.min_number, self.max_number)
+            return f'{num1} + {num2} = ?', num1 + num2

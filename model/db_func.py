@@ -27,6 +27,8 @@ def search_in_db(name: str) -> Union[list, False]:
         print(f'Database error: {e}')
     except Exception as e:
         print(f'Unexpected error: {e}')
+    finally:
+        con.close()
 
 def add_user(name: str, score: int = 0) -> Union[dict, bool]:
     rows = search_in_db(name)
@@ -56,3 +58,16 @@ def load_user(name: str) -> Union[dict, bool]:
     else:
         print('Такого игрока не существует')
         return False
+
+def update_user(user_name: str, user_score: int, new_point:int):
+    try:
+        with sq.connect(DB_NAME) as con:
+            cursor = con.cursor()
+            cursor.execute(f'UPDATE {DB_USER_TABLE_NAME} SET score = {user_score + new_point} WHERE name LIKE "{user_name}"')
+    except sqlite3.Error as e:
+        print(f'Database error: {e}')
+    except Exception as e:
+        print(f'Unexpected error: {e}')
+    finally:
+        con.close()
+        return user_score + new_point

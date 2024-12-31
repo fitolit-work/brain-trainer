@@ -15,7 +15,7 @@ window.geometry('500x500')
 window['cursor'] = 'target'
 
 player = '?'
-difficulty = [0, 0]
+difficulty = {'min_number':1, 'max_number':10, 'point':1}
 
 
 def update_player(player_data):
@@ -25,12 +25,14 @@ def update_player(player_data):
 
 def update_difficulty(difficulty_data):
     global difficulty
-    print(difficulty)
     difficulty = difficulty_data
-    print(difficulty)
+
+def get_data():
+    global difficulty, player
+    return difficulty, player
 
 
-math_game_page = MathGameFrame(window, 'black')
+math_game_page = MathGameFrame(window, 'black', get_data)
 math_mode_difficulty_page = MathModeDifficultyFrame(window, 'black', update_difficulty)
 game_mode_page = GameModeFrame(window, 'black')
 create_player_page = CreatePlayerFrame(window, 'black', update_player)
