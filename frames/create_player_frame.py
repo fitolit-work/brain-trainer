@@ -8,7 +8,12 @@ from utils.play_sound import play_audio_thread
 
 
 class CreatePlayerFrame:
-    def __init__(self, parent, bg):
+    back_frame_for_button_back: tk.Frame
+    game_mode_frame: tk.Frame
+
+    def __init__(self, parent, bg, update_player):
+        self.update_player = update_player
+
         self.create_player_frame = tk.Frame(parent, bg=bg)
         self.create_player_title_label = ttk.Label(self.create_player_frame, text='Make your player',
                                                    background='black',
@@ -28,6 +33,10 @@ class CreatePlayerFrame:
         self.load_player_button_back = tk.Button(self.create_player_frame, text='Back', font=('Lucida Console', 14),
                                                  command=self._load_back_frame)
 
+        self.game_mode_frame = ''
+
+        self.player = ''
+
         self._render_frame()
 
     def _render_frame(self):
@@ -44,7 +53,16 @@ class CreatePlayerFrame:
         result, success = checks.spaces_in_word(self.create_player_entry.get())
         self.create_player_entry.delete(0, 'end')
         if success:
-            add_user(result.lower())
+            self.player = add_user(result.lower())
+            if self.player:
+                self.update_player(self.player)
+                if self.game_mode_frame:
+                    self.game_mode_frame.tkraise()
+                    # изменение имени игрока
+                    for widget in self.game_mode_frame.winfo_children():
+                        if hasattr(widget, "player_name"):
+                            widget['text'] = f'Your Player: {result}'
+
         else:
             self.create_player_help_label['text'] = result
             self.create_player_entry.delete(0, 'end')
@@ -53,3 +71,6 @@ class CreatePlayerFrame:
         play_audio_thread('sounds/button_click.wav')
         if self.back_frame_for_button_back:
             self.back_frame_for_button_back.tkraise()
+
+    def get_player(self):
+        return self.player

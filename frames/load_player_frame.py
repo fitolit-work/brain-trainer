@@ -10,7 +10,9 @@ from utils.play_sound import play_audio_thread
 class LoadPlayerFrame:
     game_mode_frame: tk.Frame
 
-    def __init__(self, parent, bg):
+    def __init__(self, parent, bg, update_player):
+        self.update_player = update_player
+
         self.load_player_frame = tk.Frame(parent, bg=bg)
         self.load_player_title_label = ttk.Label(self.load_player_frame, text='Upload your player', background='black',
                                                  foreground='#4eff00', font=('Lucida Console', 20))
@@ -30,6 +32,7 @@ class LoadPlayerFrame:
         self.back_frame_for_button_back = ''
         self.load_player_button_back = tk.Button(self.load_player_frame, text='Back', font=('Lucida Console', 14),
                                                  command=self._load_back_frame)
+        self.player = ''
 
         self._render_frame()
 
@@ -43,12 +46,15 @@ class LoadPlayerFrame:
         self.load_player_button_back.place(anchor=CENTER, relx=0.5, rely=0.8)
 
     def _load_player(self):
+
         play_audio_thread('sounds/button_click.wav')
         result, success = checks.spaces_in_word(self.load_player_entry.get())
         self.load_player_entry.delete(0, 'end')
         if success:
-            rows = load_user(result.lower())
-            if rows:
+            self.player = load_user(result.lower())
+            print(self.player, '_load_player')
+            self.update_player(self.player)
+            if self.player:
                 if self.game_mode_frame:
                     self.game_mode_frame.tkraise()
 
@@ -66,3 +72,7 @@ class LoadPlayerFrame:
         play_audio_thread('sounds/button_click.wav')
         if self.back_frame_for_button_back:
             self.back_frame_for_button_back.tkraise()
+
+    def get_player(self):
+        print(self.player, 'get_player')
+        return self.player
