@@ -55,6 +55,7 @@ class LoadPlayerFrame:
             print(self.player, '_load_player')
             self.update_player(self.player)
             if self.player:
+                self.load_player_help_label['text'] = ""
                 if self.game_mode_frame:
                     self.game_mode_frame.tkraise()
 
@@ -69,6 +70,7 @@ class LoadPlayerFrame:
             self.load_player_entry.delete(0, 'end')
 
     def _load_back_frame(self):
+        self.load_player_help_label['text'] = ""
         play_audio_thread('sounds/button_click.wav')
         if self.back_frame_for_button_back:
             self.back_frame_for_button_back.tkraise()

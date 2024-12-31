@@ -2,8 +2,6 @@ import tkinter as tk
 import tkinter.ttk as ttk
 from tkinter.constants import CENTER
 
-from model.db_func import load_user
-from utils import checks
 from utils.play_sound import play_audio_thread
 
 
@@ -13,11 +11,10 @@ class GameModeFrame:
         self.game_mode_title_label = ttk.Label(self.game_mode_frame, text='Select game mode:', background='black',
                                                foreground='#4eff00', font=('Lucida Console', 20))
 
-
         self.game_mode_player_label = ttk.Label(self.game_mode_frame, text='Your player:', background='black',
-                                               foreground='#4eff00', font=('Lucida Console', 20))
+                                                foreground='#4eff00', font=('Lucida Console', 20))
 
-        self.game_mode_player_label.player_name = '' # создание своего атрибута в виджете для хранение имени видджета
+        self.game_mode_player_label.player_name = ''  # создание своего атрибута в виджете для хранение имени видджета
 
         self.math_frame_for_button_mode_math = ''
         self.game_mode_math_button = tk.Button(self.game_mode_frame, text='Math mode', font=('Lucida Console', 14),
@@ -45,5 +42,3 @@ class GameModeFrame:
         play_audio_thread('sounds/button_click.wav')
         if self.back_frame_for_button_back:
             self.back_frame_for_button_back.tkraise()
-
-

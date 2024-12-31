@@ -1,12 +1,13 @@
 import tkinter as tk
 
+from frames.math_game_frame import MathGameFrame
+from frames.math_mode_difficulty_frame import MathModeDifficultyFrame
 from frames.create_player_frame import CreatePlayerFrame
-from frames.game_mode import GameModeFrame
+from frames.game_mode_frame import GameModeFrame
 from frames.load_player_frame import LoadPlayerFrame
 from frames.players_frame import PlayersFrame
 from frames.start_frame import StartFrame
 from model import db_func as db
-from utils.play_sound import play_audio
 
 window = tk.Tk()
 window.title("Fill Good")
@@ -14,6 +15,7 @@ window.geometry('500x500')
 window['cursor'] = 'target'
 
 player = '?'
+difficulty = [0, 0]
 
 
 def update_player(player_data):
@@ -21,6 +23,15 @@ def update_player(player_data):
     player = player_data
 
 
+def update_difficulty(difficulty_data):
+    global difficulty
+    print(difficulty)
+    difficulty = difficulty_data
+    print(difficulty)
+
+
+math_game_page = MathGameFrame(window, 'black')
+math_mode_difficulty_page = MathModeDifficultyFrame(window, 'black', update_difficulty)
 game_mode_page = GameModeFrame(window, 'black')
 create_player_page = CreatePlayerFrame(window, 'black', update_player)
 load_player_page = LoadPlayerFrame(window, 'black', update_player)
@@ -39,6 +50,12 @@ create_player_page.back_frame_for_button_back = players_page.players_frame
 create_player_page.game_mode_frame = game_mode_page.game_mode_frame
 
 game_mode_page.back_frame_for_button_back = players_page.players_frame
+game_mode_page.math_frame_for_button_mode_math = math_mode_difficulty_page.math_mode_difficulty_frame
+
+math_mode_difficulty_page.back_frame_for_button_back = game_mode_page.game_mode_frame
+math_mode_difficulty_page.math_game_frame_for_buttons = math_game_page.math_game_frame
+
+math_game_page.back_frame_for_button_back = game_mode_page.game_mode_frame
 
 db.make_db()
 window.mainloop()

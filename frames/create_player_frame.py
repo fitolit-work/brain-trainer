@@ -55,6 +55,7 @@ class CreatePlayerFrame:
         if success:
             self.player = add_user(result.lower())
             if self.player:
+                self.create_player_help_label['text'] = ''
                 self.update_player(self.player)
                 if self.game_mode_frame:
                     self.game_mode_frame.tkraise()
@@ -68,6 +69,7 @@ class CreatePlayerFrame:
             self.create_player_entry.delete(0, 'end')
 
     def _load_back_frame(self):
+        self.create_player_help_label['text'] = ''
         play_audio_thread('sounds/button_click.wav')
         if self.back_frame_for_button_back:
             self.back_frame_for_button_back.tkraise()
